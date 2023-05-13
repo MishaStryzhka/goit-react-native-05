@@ -9,6 +9,8 @@ import RegistrationScreen from "./Screens/auth/RegistrationScreen";
 import LoginScreen from "./Screens/auth/LoginScreen";
 import Home from "./Screens/Home";
 import CreatePostsScreen from "./Screens/mainScreens/CreatePostsScreen";
+import CommentsScreen from "./Screens/othersScreens/CommentsScreen";
+import MapScreen from "./Screens/othersScreens/MapScreen";
 
 const MainStack = createStackNavigator(); // вказує на групу навігаторів
 
@@ -16,6 +18,7 @@ const MainStack = createStackNavigator(); // вказує на групу нав
 export default function App() {
 
   const [loadFonts] = useFonts({
+    "Roboto-Bold": require("./assets/fonts/Roboto/Roboto-Bold.ttf"),
     "Roboto-Medium": require("./assets/fonts/Roboto/Roboto-Medium.ttf"),
   });
 
@@ -25,7 +28,7 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <MainStack.Navigator initialRouteName="LoginScreen">
+      <MainStack.Navigator initialRouteName="RegistrationScreen">
         <MainStack.Screen options={{ headerShown: false, }} name="RegistrationScreen" component={RegistrationScreen} />
         <MainStack.Screen options={{ headerShown: false, }} name="LoginScreen" component={LoginScreen} />
         <MainStack.Screen options={{ headerShown: false, }} name="Home" component={Home} />
@@ -52,6 +55,51 @@ export default function App() {
             },
           }}
           name="CreatePostsScreen" component={CreatePostsScreen} />
+        <MainStack.Screen
+          options={{
+            title: "Комментарии",
+            headerStyle: {
+              height: 88,
+              borderBottomWidth: 1,
+            },
+            headerTitleStyle: {
+              marginBottom: -10,
+              fontFamily: "Roboto-Medium",
+              fontSize: 17,
+              lineHeight: 22,
+              letterSpacing: -0.408,
+            },
+            headerBackTitleVisible: false,
+            headerBackImage: () => (
+              <IconArrowLeft width={24} height={24} />
+            ),
+            headerLeftContainerStyle: {
+              left: 16,
+            },
+          }}
+          name="CommentsScreen" component={CommentsScreen} />
+        <MainStack.Screen
+          options={{
+            title: "Карта",
+            headerStyle: {
+              height: 88,
+              borderBottomWidth: 1,
+            },
+            headerTitleStyle: {
+              marginBottom: -10,
+              fontFamily: "Roboto-Medium",
+              fontSize: 17,
+              lineHeight: 22,
+              letterSpacing: -0.408,
+            },
+            headerBackTitleVisible: false,
+            headerBackImage: () => (
+              <IconArrowLeft width={24} height={24} />
+            ),
+            headerLeftContainerStyle: {
+              left: 16,
+            },
+          }} name="MapScreen" component={MapScreen} />
 
       </MainStack.Navigator>
     </NavigationContainer>

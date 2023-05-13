@@ -1,8 +1,13 @@
-import { useState } from "react";
+// import { useState } from "react";
 import { Alert, ImageBackground, Keyboard, KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View, TouchableWithoutFeedback } from "react-native";
 import BtnPlus from "../../component/btnPlus";
 
+import React, { useState, useEffect } from 'react';
+import { Button, Image, } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
+
 const RegistrationScreen = ({ navigation }) => {
+    const [image, setImage] = useState(null);
     const [name, setName] = useState({
         is: true,
         value: "",
@@ -18,8 +23,22 @@ const RegistrationScreen = ({ navigation }) => {
 
 
 
-    const addImages = () => {
-        Alert.alert("Add imades");
+    const addImages = async () => {
+        // No permissions request is necessary for launching the image library
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            base64: true,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+        });
+
+        console.log(result);
+
+        if (!result.canceled) {
+            const { base64, height, uri, width } = result.assets[0]
+            setImage({ base64, height, uri, width })
+        }
     };
 
     const handlerShow = () => {
@@ -33,7 +52,10 @@ const RegistrationScreen = ({ navigation }) => {
         else if (name.value !== "" && email.value !== "" && password.value !== "") {
             console.log("name: ", name.value, "   email: ", email.value, "  password; ", password.value)
             Alert.alert(`Поздравляем ${name.value}! Вы зарегистрированы.`);
-            navigation.navigate("Home")
+            navigation.navigate('Home', {
+                screen: "PostsScreen",
+                params: { user: { name: name.value, email: email.value, image } }
+            })
         } else {
             Alert.alert("Введите ваши данные!!!")
         }
@@ -90,6 +112,11 @@ const RegistrationScreen = ({ navigation }) => {
                     >
                         <View style={styles.registrationContainer}>
                             <View style={styles.imagesContainer}>
+                                {image && <Image source={{ uri: image.uri }} style={{
+                                    width: 120,
+                                    height: 120,
+                                    borderRadius: 16,
+                                }} />}
                                 <BtnPlus style={styles.btnPlus} onPress={addImages}></BtnPlus>
                             </View>
 
